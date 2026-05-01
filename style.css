@@ -146,6 +146,12 @@ h2 {
         align-items: flex-start;
     }
     
+    .glass-panel {
+        width: 100%;
+        max-width: 100vw;
+        overflow: hidden;
+    }
+    
     h1 {
         font-size: 1.5rem;
     }
@@ -170,6 +176,7 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    min-width: 0; /* Allows flex/grid children to shrink below content size */
 }
 
 /* Forms and Inputs */
@@ -198,6 +205,8 @@ label {
 }
 
 input, select {
+    width: 100%;
+    max-width: 100%;
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid var(--glass-border);
     color: var(--text-primary);
