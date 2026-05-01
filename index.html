@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d1117">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header glass-panel">
+            <h1>Expense Tracker</h1>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <span class="stat-label">Daily Spend</span>
+                    <h2 id="daily-spend" class="stat-value">$0.00</h2>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Monthly Spend</span>
+                    <h2 id="monthly-spend" class="stat-value">$0.00</h2>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Column: Forms -->
+            <div class="left-col">
+                <!-- Add Expense Section -->
+                <section class="glass-panel add-expense-section">
+                    <h2>Add Expense</h2>
+                    <form id="expense-form" class="form-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="expense-amount">Amount</label>
+                                <input type="number" id="expense-amount" placeholder="0.00" step="0.01" required>
+                            </div>
+                            <div class="input-field">
+                                <label for="expense-date">Date</label>
+                                <input type="date" id="expense-date" required>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="expense-tag">Whom (Tag)</label>
+                                <input type="text" id="expense-tag" placeholder="e.g. John Doe, Grocery Store">
+                            </div>
+                            <div class="input-field">
+                                <label for="expense-category">Category</label>
+                                <select id="expense-category" required>
+                                    <option value="" disabled selected>Select Category</option>
+                                    <!-- Options injected via JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Budget Bar -->
+                        <div id="budget-bar-container" class="budget-bar-container hidden">
+                            <div class="budget-header">
+                                <span id="budget-category-name">Category</span>
+                                <span id="budget-status">$0 / $0</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                            </div>
+                            <small id="budget-warning" class="warning-text hidden">Over Budget!</small>
+                        </div>
+
+                        <button type="submit" class="btn primary-btn">Add Expense</button>
+                    </form>
+                </section>
+
+                <!-- Manage Categories Section -->
+                <section class="glass-panel add-category-section">
+                    <h2>Categories & Budgets</h2>
+                    <form id="category-form" class="form-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="category-name">New Category</label>
+                                <input type="text" id="category-name" placeholder="e.g. Food" required>
+                            </div>
+                            <div class="input-field">
+                                <label for="category-budget">Monthly Budget</label>
+                                <input type="number" id="category-budget" placeholder="0.00" step="0.01" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn secondary-btn">Add Category</button>
+                    </form>
+                    <div class="categories-list" id="categories-list">
+                        <!-- List injected via JS -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Visuals & List -->
+            <div class="right-col">
+                <!-- Graph Section -->
+                <section class="glass-panel graph-section">
+                    <h2>Spending Overview (This Month)</h2>
+                    <div class="chart-container">
+                        <canvas id="expense-chart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Recent Expenses Section -->
+                <section class="glass-panel recent-expenses-section">
+                    <h2>Recent Expenses</h2>
+                    <div class="expense-list" id="expense-list">
+                        <!-- Items injected via JS -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
